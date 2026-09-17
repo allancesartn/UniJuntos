@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <title>UniJuntos</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script src="https://alcdn.msauth.net/browser/2.38.4/js/msal-browser.min.js" defer></script>
+  <script src="js/config.js" defer></script>
+  <script src="js/auth.js" defer></script>
+  <script src="js/graph.js" defer></script>
+  <script src="js/storage.js" defer></script>
+  <script src="js/app.js" defer></script>
+</head>
+<body>
+  <section id="loginScreen" class="login-screen">
+    <div class="login-card">
+      <div class="brand brand-login">
+        <img src="assets/logo-unijuntos.png" alt="Logo UniJuntos" class="logo logo-login" onerror="this.style.display='none'">
+        <div><h1>UniJuntos</h1><p>Acompanhando vidas, fortalecendo conexões</p></div>
+      </div>
+      <div id="setupNotice" class="notice warning">
+        Informe o Application (client) ID do aplicativo SPA registrado no Microsoft Entra.
+      </div>
+      <label>Application (client) ID
+        <input id="clientId" autocomplete="off" placeholder="00000000-0000-0000-0000-000000000000">
+      </label>
+      <label>URI de redirecionamento desta instalação
+        <input id="redirectUri" readonly>
+      </label>
+      <div class="button-row"><button id="saveConfigBtn" class="button secondary">Salvar configuração</button><button id="loginBtn" class="button">Entrar com Microsoft</button></div>
+      <p class="help">O Client ID é público e pode ficar no navegador. Não adicione Client Secret a esta aplicação.</p>
+    </div>
+  </section>
+
+  <div id="appScreen" class="hidden">
+    <header class="topbar"><div class="container topbar-inner">
+      <div class="brand"><img src="assets/logo-unijuntos.png" alt="Logo UniJuntos" class="logo" onerror="this.style.display='none'"><div><h1>UniJuntos</h1><p>Acompanhando vidas, fortalecendo conexões</p></div></div>
+      <div class="top-actions"><span id="signedUser" class="muted"></span><button id="syncBtn" class="button secondary">Sincronizar</button><button id="logoutBtn" class="button secondary">Sair</button></div>
+    </div></header>
+    <main class="container">
+      <div id="status" class="notice success">Conectado ao OneDrive.</div>
+      <section class="metrics">
+        <article class="card"><span>Cadastros</span><strong id="count">0</strong></article>
+        <article class="card"><span>Conta conectada</span><strong id="accountEmail" class="small-value">-</strong></article>
+        <article class="card"><span>Última sincronização</span><strong id="lastSync" class="small-value">-</strong></article>
+      </section>
+      <section class="card">
+        <div class="section-head"><div><h2>Meus acompanhamentos</h2><p>Dados sincronizados no arquivo privado da pasta do aplicativo no OneDrive.</p></div><button id="newBtn" class="button">+ Novo cadastro</button></div>
+        <input id="search" class="search" placeholder="Pesquisar por nome, telefone, bairro, religião ou observação">
+        <div id="list"></div>
+      </section>
+    </main>
+  </div>
+
+  <div id="formModal" class="modal hidden"><form id="form" class="modal-card">
+    <div class="modal-head"><div><h2 id="formTitle">Novo cadastro</h2><p>Todos os campos aceitam texto livre.</p></div><button type="button" class="icon-button closeForm" aria-label="Fechar">×</button></div>
+    <div class="form-grid">
+      <label>Nome completo<input name="nome" required maxlength="180"></label>
+      <label>Religião<input name="religiao" maxlength="120"></label>
+      <label>Telefone de contato<input name="telefone" maxlength="80"></label>
+      <label>Já foi membro da igreja ou não<input name="membro" maxlength="120"></label>
+      <label>Bairro onde mora<input name="bairro" maxlength="150"></label>
+      <label class="full">Observações<textarea name="observacoes" rows="6" maxlength="5000"></textarea></label>
+    </div>
+    <div class="button-row end"><button type="button" class="button secondary closeForm">Cancelar</button><button class="button" type="submit">Salvar no OneDrive</button></div>
+  </form></div>
+
+  <div id="detailModal" class="modal hidden"><div class="modal-card"><div class="modal-head"><h2>Detalhes e histórico</h2><button class="icon-button closeDetail" aria-label="Fechar">×</button></div><div id="detail"></div></div></div>
+</body>
+</html>
